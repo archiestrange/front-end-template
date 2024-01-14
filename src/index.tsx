@@ -1,19 +1,33 @@
 import React from 'react';
+
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { CssBaseline } from '@mui/material';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+import { App } from './App';
+
+const client = new ApolloClient({
+  uri:
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:4000'
+      : 'TODO: Add this when we have a live endpoint',
+  cache: new InMemoryCache(),
+});
+
+// const firebaseConfig = {
+//   storageBucket: 'TODO: Add this when firebase is setup',
+// };
+
+// TODO: Uncomment this when the above storage bucket is configured
+// initializeApp(firebaseConfig);
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <ApolloProvider client={client}>
+    <React.StrictMode>
+      <CssBaseline />
+      <App />
+    </React.StrictMode>
+  </ApolloProvider>,
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
